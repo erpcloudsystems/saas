@@ -48,7 +48,7 @@ def verify_account(name, code):
     else:
         return "Wapi"
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def create_site(site):
     site = frappe.get_doc("Site", site)
     cmd = ["bench", "new-site", "--db-name", site.name, "--mariadb-root-username", "root", "--mariadb-root-password", 'password', "--admin-password", "logic", "--install-app", "erpnext", site.title]
