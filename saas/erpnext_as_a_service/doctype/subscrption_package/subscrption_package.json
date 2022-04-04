@@ -1,0 +1,247 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:package_title",
+ "creation": "2022-04-03 22:54:00.206847",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "package_title",
+  "package_type",
+  "column_break_3",
+  "default_storage_space",
+  "number_of_available_users",
+  "section_break_6",
+  "definition_of_departments",
+  "definition_of_branches",
+  "possibility_adding_one_company",
+  "identification_of_employees_and_personal_data",
+  "define_limitations",
+  "vacations",
+  "social_insurance",
+  "payroll_management",
+  "attendance_departure_and_special_reports",
+  "managing_the_custody",
+  "payment_of_other_dues_and_end_of_service",
+  "archiving_and_document_management",
+  "reports",
+  "speeches",
+  "report_generator",
+  "self_service",
+  "create_electronic_forms",
+  "vehicle_management",
+  "employment_department",
+  "manage_and_control_permissions",
+  "possibility_to_add_additional_users",
+  "possibility_to_add_additional_space",
+  "technical_support",
+  "staff_performance_evaluation",
+  "user_activity_log"
+ ],
+ "fields": [
+  {
+   "fieldname": "package_title",
+   "fieldtype": "Data",
+   "label": "Package Title",
+   "unique": 1
+  },
+  {
+   "fieldname": "package_type",
+   "fieldtype": "Select",
+   "label": "Package Type",
+   "options": "\nENTERPRISE\nPLATINUM\n\u202bPREMIUM"
+  },
+  {
+   "fieldname": "default_storage_space",
+   "fieldtype": "Float",
+   "label": "Default Storage Space"
+  },
+  {
+   "fieldname": "number_of_available_users",
+   "fieldtype": "Int",
+   "label": "Number Of Available Users"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_6",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "definition_of_departments",
+   "fieldtype": "Check",
+   "label": "Definition Of Departments"
+  },
+  {
+   "default": "0",
+   "fieldname": "definition_of_branches",
+   "fieldtype": "Check",
+   "label": "Definition Of Branches"
+  },
+  {
+   "default": "0",
+   "fieldname": "possibility_adding_one_company",
+   "fieldtype": "Check",
+   "label": "The Possibility Of Adding More Than One Company In The Same Account"
+  },
+  {
+   "default": "0",
+   "fieldname": "identification_of_employees_and_personal_data",
+   "fieldtype": "Check",
+   "label": "Identification Of Employees And Personal Data"
+  },
+  {
+   "default": "0",
+   "fieldname": "define_limitations",
+   "fieldtype": "Check",
+   "label": "Define Limitations"
+  },
+  {
+   "default": "0",
+   "fieldname": "vacations",
+   "fieldtype": "Check",
+   "label": "Vacations"
+  },
+  {
+   "default": "0",
+   "fieldname": "social_insurance",
+   "fieldtype": "Check",
+   "label": "Social Insurance"
+  },
+  {
+   "default": "0",
+   "fieldname": "payroll_management",
+   "fieldtype": "Check",
+   "label": "Payroll Management, Including Loans, Advances, Other Entitlements, And Overtime"
+  },
+  {
+   "default": "0",
+   "fieldname": "attendance_departure_and_special_reports",
+   "fieldtype": "Check",
+   "label": "Attendance, Departure And Special Reports"
+  },
+  {
+   "default": "0",
+   "fieldname": "managing_the_custody",
+   "fieldtype": "Check",
+   "label": "Managing The Custody"
+  },
+  {
+   "default": "0",
+   "fieldname": "payment_of_other_dues_and_end_of_service",
+   "fieldtype": "Check",
+   "label": "Payment Of Other Dues And End Of Service"
+  },
+  {
+   "default": "0",
+   "fieldname": "archiving_and_document_management",
+   "fieldtype": "Check",
+   "label": "Archiving And Document Management"
+  },
+  {
+   "default": "0",
+   "fieldname": "reports",
+   "fieldtype": "Check",
+   "label": "Reports"
+  },
+  {
+   "default": "0",
+   "fieldname": "speeches",
+   "fieldtype": "Check",
+   "label": "Speeches"
+  },
+  {
+   "default": "0",
+   "fieldname": "report_generator",
+   "fieldtype": "Check",
+   "label": "Report Generator"
+  },
+  {
+   "default": "0",
+   "fieldname": "self_service",
+   "fieldtype": "Check",
+   "label": "Self Service"
+  },
+  {
+   "default": "0",
+   "fieldname": "create_electronic_forms",
+   "fieldtype": "Check",
+   "label": "Create Electronic Forms"
+  },
+  {
+   "default": "0",
+   "fieldname": "vehicle_management",
+   "fieldtype": "Check",
+   "label": "Vehicle Management"
+  },
+  {
+   "default": "0",
+   "fieldname": "employment_department",
+   "fieldtype": "Check",
+   "label": "Employment Department"
+  },
+  {
+   "default": "0",
+   "fieldname": "manage_and_control_permissions",
+   "fieldtype": "Check",
+   "label": "Manage And Control Permissions"
+  },
+  {
+   "default": "0",
+   "fieldname": "possibility_to_add_additional_users",
+   "fieldtype": "Check",
+   "label": "Possibility To Add Additional Users"
+  },
+  {
+   "default": "0",
+   "fieldname": "possibility_to_add_additional_space",
+   "fieldtype": "Check",
+   "label": "Possibility To Add Additional Space"
+  },
+  {
+   "default": "0",
+   "fieldname": "technical_support",
+   "fieldtype": "Check",
+   "label": "Technical Support"
+  },
+  {
+   "default": "0",
+   "fieldname": "staff_performance_evaluation",
+   "fieldtype": "Check",
+   "label": "Staff Performance Evaluation"
+  },
+  {
+   "default": "0",
+   "fieldname": "user_activity_log",
+   "fieldtype": "Check",
+   "label": "User Activity Log"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-04-04 00:42:26.058241",
+ "modified_by": "Administrator",
+ "module": "ERPNext as a Service",
+ "name": "Subscrption Package",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
