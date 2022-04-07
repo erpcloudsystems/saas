@@ -72,7 +72,6 @@ app_license = "MIT"
 
 doc_events = {
  	"Site": {
- 		"after_insert": "saas.api.notify_user",
 		"on_trash": "saas.api.delete_account"
 	}
 }

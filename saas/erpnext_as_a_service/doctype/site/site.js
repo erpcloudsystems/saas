@@ -3,38 +3,20 @@
 
 frappe.ui.form.on('Site', {
 	refresh: function(frm) {
-		frm.add_custom_button(__('Send confirmation email'), function(){
-			frm.trigger("send_confirmation_email")
-
-		}, __("Actions"));
 		frm.add_custom_button(__('Create site'), function(){
 			frm.trigger("create_site")
 
-		}, __("Actions"));
+		});
 		frm.add_custom_button(__('Delete Site'), function(){
 			frm.trigger("delete_site")
 
-		}, __("Actions"));
-		frm.add_custom_button(__('Verify account'), function(){
-			console.log("SSsss	")
-			frm.trigger("verify_account")
+		});
 
-		}, __("Actions"));
+		frm.add_custom_button(__('Notify Client'), function(){
+			frm.trigger("notify_client")
 
-	},
-	send_confirmation_email: function(frm) {
-		if (frm.doc.status==="Pending Approval"){
-			frappe.call({
-				method: "saas.api.send_invitation_emails",
-				args: {
-					site: frm.doc.name
-				},
-				callback: function(r){
-					console.log(String(r))
+		});
 
-				}
-			})
-		}
 	},
 	create_site: function(frm){
 		frappe.call({
@@ -47,9 +29,9 @@ frappe.ui.form.on('Site', {
 			}
 		})
 	},
-	delete_site: function(frm){
+	notify_client: function(frm){
 		frappe.call({
-			method:"saas.api.delete_site",
+			method:"saas.api.notify_client",
 			args: {
 				site: frm.doc.name
 			},
@@ -58,13 +40,11 @@ frappe.ui.form.on('Site', {
 			}
 		})
 	},
-
-	verify_account: function(frm){
+	delete_site: function(frm){
 		frappe.call({
-			method:"saas.api.verify_account",
+			method:"saas.api.delete_site",
 			args: {
-				name: frm.doc.name,
-				code : frm.doc.email_verification_code
+				name: frm.doc.name
 			},
 			callback: function(r){
 				console.log(String(r))
