@@ -20,13 +20,13 @@ def delete_account(doc, method):
 @frappe.whitelist()
 def create_site(site):
     site = frappe.get_doc("Site", site)
-    cmd = ["bench", "new-site", "--db-name", site.name, "--mariadb-root-username", "root", "--mariadb-root-password", '123', "--admin-password", "logic", "--install-app", "erpnext","--install-app", "cw", site.title]
+    cmd = ["bench", "new-site", "--db-name", site.name, "--mariadb-root-username", "root", "--mariadb-root-password", 'password', "--admin-password", "logic", "--install-app", "erpnext","--install-app", "cw", site.title]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                                         stderr=subprocess.PIPE,
                                         stdin=subprocess.PIPE,
-                                        # cwd="/home/frappe/frappe-bench"
-                                        cwd="/home/kamal/work/v13/saas")
+                                        cwd="/home/frappe/frappe-bench")
     out,err = p.communicate()
+    set_config_site(site.name)
     if not err:
         """Create an orientation meeting when a new User is added"""
         lead = frappe.get_doc({
@@ -114,3 +114,5 @@ def set_config_site(site):
     update_site_config('storage_space',site.storage_space,site_config_path = site_config_path)
     update_site_config('available_users',site.number_users,site_config_path = site_config_path)
     update_site_config('company',site.company,site_config_path = site_config_path)
+    update_site_config("skip_setup_wizard",1,site_config_path = site_config_path)
+    
