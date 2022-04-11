@@ -54,11 +54,11 @@ def notify_client(site):
 @frappe.whitelist()
 def delete_site(name):
     site = frappe.get_doc("Site", name)
-    cmd = ["bench", "drop-site","--root-password", '123', site.title]
+    cmd = ["bench", "drop-site","--root-password", 'password', site.title]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                                         stderr=subprocess.PIPE,
                                         stdin=subprocess.PIPE,
-                                        cwd="/home/kamal/work/v13/saas")
+                                        cwd="/home/frappe/frappe-bench")
     out,err = p.communicate()
     if not err:
         frappe.sendmail(
