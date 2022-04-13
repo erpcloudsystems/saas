@@ -5,8 +5,11 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-import subprocess
-
-
 class Site(Document):
-	pass
+	def validate(self):
+		subscrption_package = frappe.get_doc("Subscrption Package" ,self.subscrption_package)
+		if self.storage_space < subscrption_package.default_storage_space:
+			frappe.throw(f"Storage Space must be at least {subscrption_package.default_storage_space}")
+
+		if self.number_users < subscrption_package.number_users:
+			frappe.throw(f"Number of available users must be at least {subscrption_package.number_users}")

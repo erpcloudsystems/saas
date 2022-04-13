@@ -4,9 +4,11 @@
 frappe.ui.form.on('Site', {
 	refresh: function(frm) {
 		frm.add_custom_button(__('Create site'), function(){
-			frm.trigger("create_site")
-
+			frm.events.create_site(frm).then(data => {
+				frm.trigger("set_config_site")
+			})
 		});
+		
 		frm.add_custom_button(__('Delete Site'), function(){
 			frm.trigger("delete_site")
 
@@ -19,14 +21,16 @@ frappe.ui.form.on('Site', {
 
 	},
 	create_site: function(frm){
-		frappe.call({
+		return frappe.call({
 			method:"saas.api.create_site",
 			args: {
 				site: frm.doc.name
 			},
 			callback: function(r){
-				console.log(String(r))
-			}
+				frappe.msgprint(__("create site done"))
+			},
+			freeze: true,
+			freeze_message: __("start create site")
 		})
 	},
 	notify_client: function(frm){
@@ -51,4 +55,16 @@ frappe.ui.form.on('Site', {
 			}
 		})
 	},
+	set_config_site: function(frm) {
+		frappe.call({
+			method: "saas.api.set_config_site",
+			args: {
+				site: frm.doc.name
+			},
+			callback: function(r){
+				console.log(String(r))
+
+			}
+		})
+},
 });

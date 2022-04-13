@@ -5,23 +5,25 @@
  "document_type": "Document",
  "engine": "InnoDB",
  "field_order": [
-  "customer_name",
+  "customer",
+  "company",
+  "email_address",
   "title",
-  "telephone",
-  "email",
+  "subscrption_package",
+  "mobile_number",
   "status",
+  "column_break_5",
   "email_verification_code",
   "sms_verification_code",
-  "lead"
+  "lead",
+  "subscription_start_date",
+  "subscription_end_date",
+  "storage_space",
+  "activate_dingerprint_devices",
+  "number_devices",
+  "number_users"
  ],
  "fields": [
-  {
-   "fieldname": "customer_name",
-   "fieldtype": "Data",
-   "label": "Customer Name",
-   "reqd": 1,
-   "set_only_once": 1
-  },
   {
    "fieldname": "title",
    "fieldtype": "Data",
@@ -29,20 +31,6 @@
    "label": "Site Name (URL)",
    "reqd": 1,
    "unique": 1
-  },
-  {
-   "fieldname": "telephone",
-   "fieldtype": "Data",
-   "label": "Telephone",
-   "reqd": 1,
-   "set_only_once": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "Email",
-   "options": "Email"
   },
   {
    "fieldname": "status",
@@ -75,10 +63,82 @@
    "options": "Lead",
    "read_only": 1,
    "unique": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "label": "Email Address"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Number",
+   "reqd": 1,
+   "set_only_once": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "subscription_start_date",
+   "fieldtype": "Date",
+   "label": "Subscription Start Date"
+  },
+  {
+   "fieldname": "subscription_end_date",
+   "fieldtype": "Date",
+   "label": "Subscription End Date"
+  },
+  {
+   "fetch_from": "subscrption_package.default_storage_space",
+   "fieldname": "storage_space",
+   "fieldtype": "Float",
+   "label": "Storage Space"
+  },
+  {
+   "default": "No",
+   "fieldname": "activate_dingerprint_devices",
+   "fieldtype": "Select",
+   "label": "Activate Dingerprint Devices",
+   "options": "\nYes\nNo"
+  },
+  {
+   "fieldname": "number_devices",
+   "fieldtype": "Int",
+   "label": "Number Of Available Attendance Devices"
+  },
+  {
+   "fetch_from": "subscrption_package.number_users",
+   "fieldname": "number_users",
+   "fieldtype": "Int",
+   "label": "Number Of Available Users"
+  },
+  {
+   "fieldname": "subscrption_package",
+   "fieldtype": "Link",
+   "label": "Subscription Package",
+   "options": "Subscrption Package",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "label": "Company",
+   "reqd": 1
   }
  ],
  "links": [],
- "modified": "2022-04-03 03:36:47.284245",
+ "modified": "2022-04-06 23:23:28.669549",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Site",
