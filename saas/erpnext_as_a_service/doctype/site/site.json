@@ -12,6 +12,7 @@
   "subscrption_package",
   "mobile_number",
   "status",
+  "site_created",
   "column_break_5",
   "email_verification_code",
   "sms_verification_code",
@@ -19,9 +20,11 @@
   "subscription_start_date",
   "subscription_end_date",
   "storage_space",
-  "activate_dingerprint_devices",
+  "activate_fingerprint_devices",
   "number_devices",
-  "number_users"
+  "number_users",
+  "number_companies",
+  "site_deleted"
  ],
  "fields": [
   {
@@ -97,20 +100,14 @@
   {
    "fieldname": "subscription_end_date",
    "fieldtype": "Date",
-   "label": "Subscription End Date"
+   "label": "Subscription End Date",
+   "reqd": 1
   },
   {
    "fetch_from": "subscrption_package.default_storage_space",
    "fieldname": "storage_space",
    "fieldtype": "Float",
    "label": "Storage Space"
-  },
-  {
-   "default": "No",
-   "fieldname": "activate_dingerprint_devices",
-   "fieldtype": "Select",
-   "label": "Activate Dingerprint Devices",
-   "options": "\nYes\nNo"
   },
   {
    "fieldname": "number_devices",
@@ -135,10 +132,36 @@
    "fieldtype": "Data",
    "label": "Company",
    "reqd": 1
+  },
+  {
+   "default": "No",
+   "fieldname": "activate_fingerprint_devices",
+   "fieldtype": "Select",
+   "label": "Activate Fingerprint Devices",
+   "options": "\nYes\nNo"
+  },
+  {
+   "fieldname": "number_companies",
+   "fieldtype": "Int",
+   "label": "Number Of Available Companies"
+  },
+  {
+   "default": "0",
+   "fieldname": "site_created",
+   "fieldtype": "Check",
+   "label": "Site Created",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "site_deleted",
+   "fieldtype": "Check",
+   "label": "Site Deleted",
+   "read_only": 1
   }
  ],
  "links": [],
- "modified": "2022-04-06 23:23:28.669549",
+ "modified": "2022-04-18 16:11:06.571656",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Site",
@@ -169,7 +192,6 @@
    "write": 1
   }
  ],
- "quick_entry": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
  "title_field": "title"
