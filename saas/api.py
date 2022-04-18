@@ -8,7 +8,7 @@ import os
 import json
 from frappe.installer import update_site_config
 from frappe.model.document import Document
-from frappe.utils import getdate
+from frappe.utils import getdate, get_bench_path
 
 def id_generator(size=50, chars=string.ascii_lowercase + string.ascii_uppercase + string.digits):
     return ''.join(random.SystemRandom().choice(chars) for _ in range(size))
@@ -20,11 +20,11 @@ def delete_account(doc, method):
 @frappe.whitelist()
 def create_site(site):
     site = frappe.get_doc("Site", site)
-    cmd = ["bench", "new-site", "--db-name", site.name, "--mariadb-root-username", "root", "--mariadb-root-password", 'password', "--admin-password", "logic", "--install-app", "erpnext","--install-app", "cw", site.title]
+    cmd = ["bench", "new-site", "--db-name", site.name, "--mariadb-root-username", "root", "--mariadb-root-password", 'password', "--admin-password", "logic", "--install-app", "erpnext","--install-app", "saas_manager", site.title]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                                         stderr=subprocess.PIPE,
                                         stdin=subprocess.PIPE,
-                                        cwd="/home/frappe/frappe-bench")
+                                        cwd=get_bench_path())
     out,err = p.communicate()
     set_config_site(site.name)
     if not err:
@@ -38,12 +38,14 @@ def create_site(site):
         # the System Manager might not have permission to create a Meeting
         lead.flags.ignore_permissions = True
         lead.insert()
+    site.site_created = 1
+    site.save()
 
 @frappe.whitelist()
 def notify_client(site):
     site = frappe.get_doc("Site", site)
     frappe.sendmail(
-    recipients = [site.email],
+    recipients = [site.email_address],
     sender="arwema@gmail.com",
     subject="Your ERP Account",
     message = "Dear Customer, your account has been create and accessible from: http://%s:8000" % (site.title),
@@ -58,7 +60,7 @@ def delete_site(name):
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                                         stderr=subprocess.PIPE,
                                         stdin=subprocess.PIPE,
-                                        cwd="/home/frappe/frappe-bench")
+                                        cwd=get_bench_path())
     out,err = p.communicate()
     if not err:
         frappe.sendmail(
@@ -73,6 +75,8 @@ def delete_site(name):
         lead.flags.ignore_permissions = True
         lead.status = "Do Not Contact"
         lead.save()
+    site.site_deleted = 1
+    site.save()
 
 @frappe.whitelist()
 def set_config_site(site):
@@ -109,10 +113,10 @@ def set_config_site(site):
     update_site_config('user_activity_log',subscrption_package.user_activity_log,site_config_path = site_config_path)
     update_site_config('subscription_start_date',str(site.subscription_start_date),site_config_path = site_config_path)
     update_site_config('subscription_end_date',str(site.subscription_end_date),site_config_path = site_config_path)
-    update_site_config('activate_fingerprint_devices',site.activate_fingerprint,site_config_path = site_config_path)
+    update_site_config('activate_fingerprint_devices',site.activate_fingerprint_devices,site_config_path = site_config_path)
     update_site_config('number_of_available_attendance_devices',site.number_devices,site_config_path = site_config_path)
     update_site_config('storage_space',site.storage_space,site_config_path = site_config_path)
     update_site_config('available_users',site.number_users,site_config_path = site_config_path)
     update_site_config('company',site.company,site_config_path = site_config_path)
+    update_site_config('company_limit',site.number_companies,site_config_path = site_config_path)
     update_site_config("skip_setup_wizard",1,site_config_path = site_config_path)
-    
