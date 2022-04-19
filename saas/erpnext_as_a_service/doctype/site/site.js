@@ -8,15 +8,17 @@ frappe.ui.form.on('Site', {
 				frm.trigger("set_config_site")
 			})
 		});
-		
-		frm.add_custom_button(__('Delete Site'), function(){
-			frm.trigger("delete_site")
-
-		});
-
+		if(frm.doc.site_created == 1){
+			frm.remove_custom_button('Create site');
+			frm.add_custom_button(__('Delete Site'), function(){
+				frm.trigger("delete_site")
+			});
+		}
+		if(frm.doc.site_deleted == 1){
+			cur_frm.remove_custom_button('Delete Site');
+		}
 		frm.add_custom_button(__('Notify Client'), function(){
 			frm.trigger("notify_client")
-
 		});
 
 	},
@@ -28,6 +30,7 @@ frappe.ui.form.on('Site', {
 			},
 			callback: function(r){
 				frappe.msgprint(__("create site done"))
+				location.reload()
 			},
 			freeze: true,
 			freeze_message: __("start create site")
@@ -51,6 +54,7 @@ frappe.ui.form.on('Site', {
 				name: frm.doc.name
 			},
 			callback: function(r){
+				location.reload()
 				console.log(String(r))
 			}
 		})
