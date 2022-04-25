@@ -116,6 +116,7 @@ def set_config_site(site):
     update_site_config('activate_fingerprint_devices',site.activate_fingerprint_devices,site_config_path = site_config_path)
     update_site_config('number_of_available_attendance_devices',site.number_devices,site_config_path = site_config_path)
     update_site_config('storage_space',site.storage_space,site_config_path = site_config_path)
+    update_site_config('used_file_space',0,site_config_path = site_config_path)
     update_site_config('available_users',site.number_users,site_config_path = site_config_path)
     update_site_config('company',site.company,site_config_path = site_config_path)
     update_site_config('company_limit',site.number_companies,site_config_path = site_config_path)
