@@ -11,6 +11,7 @@
   "customer_or_lead",
   "customer_lead",
   "company",
+  "abbr",
   "column_break_6",
   "mobile_number",
   "email_address",
@@ -70,7 +71,8 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Email Address",
-   "options": "Email"
+   "options": "Email",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_5",
@@ -200,11 +202,17 @@
    "fieldname": "usage_info_html",
    "fieldtype": "HTML",
    "label": "Usage Info"
+  },
+  {
+   "fieldname": "abbr",
+   "fieldtype": "Data",
+   "label": "Abbr",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-14 14:40:37.723217",
+ "modified": "2022-07-24 16:38:44.514532",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Customer System",
