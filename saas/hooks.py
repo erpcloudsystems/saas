@@ -4,11 +4,11 @@ from . import __version__ as app_version
 
 app_name = "saas"
 app_title = "ERPNext as a Service"
-app_publisher = "Africlouds Ltd"
+app_publisher = "AnvilERP"
 app_description = "Manage creating ERP instances as a service, integrates with CRM and Sales module"
 app_icon = "octicon octicon-file-directory"
 app_color = "green"
-app_email = "arwema@gmail.com"
+app_email = "sales@anvilerp.com"
 app_license = "MIT"
 
 # Includes in <head>
@@ -71,8 +71,8 @@ app_license = "MIT"
 # Hook on document methods and events
 
 doc_events = {
- 	"Site": {
-		"on_trash": "saas.api.delete_account"
+ 	"*": {
+		"on_update": "saas.io_connector._socketio_connector"
 	}
 }
 # doc_events = {

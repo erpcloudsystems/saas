@@ -1,0 +1,241 @@
+{
+ "actions": [],
+ "creation": "2016-07-01 15:03:05.208278",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "engine": "InnoDB",
+ "field_order": [
+  "usage_info_section",
+  "usage_info_html",
+  "customer_details",
+  "customer_or_lead",
+  "customer_lead",
+  "company",
+  "column_break_6",
+  "mobile_number",
+  "email_address",
+  "email_verification_code",
+  "sms_verification_code",
+  "title",
+  "subscription_section",
+  "subscription_package",
+  "subscription_start_date",
+  "subscription_end_date",
+  "column_break_5",
+  "storage_space",
+  "activate_fingerprint",
+  "available_devices",
+  "available_users",
+  "available_companies",
+  "system_status_section",
+  "status",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Site Name (URL)",
+   "no_copy": 1,
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "no_copy": 1,
+   "options": "Pending Approval\nEmail Sent\nVerified\nIn Process\nCreated\nTrial\nDeleted\nSuspended",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "email_verification_code",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Email Verification Code",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sms_verification_code",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "SMS Verification Code",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "email_address",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Email Address",
+   "options": "Email"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Mobile Number",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "subscription_start_date",
+   "fieldtype": "Date",
+   "label": "Subscription Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "subscription_end_date",
+   "fieldtype": "Date",
+   "label": "Subscription End Date",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "subscription_package.default_storage_space",
+   "fieldname": "storage_space",
+   "fieldtype": "Float",
+   "label": "Storage Space ( MB )"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "customer_details",
+   "fieldtype": "Section Break",
+   "label": "Customer Details"
+  },
+  {
+   "fieldname": "column_break_6",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "system_status_section",
+   "fieldtype": "Section Break",
+   "label": "System Status"
+  },
+  {
+   "fieldname": "subscription_section",
+   "fieldtype": "Section Break",
+   "label": "Subscription"
+  },
+  {
+   "fieldname": "customer_lead",
+   "fieldtype": "Dynamic Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "customer_or_lead",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fieldname": "customer_or_lead",
+   "fieldtype": "Select",
+   "label": "Customer / Lead",
+   "options": "Customer\nLead",
+   "reqd": 1
+  },
+  {
+   "fieldname": "subscription_package",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Subscription Package",
+   "options": "Subscription Package",
+   "reqd": 1,
+   "set_only_once": 1
+  },
+  {
+   "fetch_from": "subscription_package.available_users",
+   "fieldname": "available_users",
+   "fieldtype": "Int",
+   "label": "Available Users"
+  },
+  {
+   "default": "1",
+   "description": "one Company Will be Available by default",
+   "fieldname": "available_companies",
+   "fieldtype": "Int",
+   "label": "Available Companies"
+  },
+  {
+   "default": "0",
+   "fieldname": "available_devices",
+   "fieldtype": "Int",
+   "label": "Number Of Available Attendance Devices"
+  },
+  {
+   "default": "No",
+   "description": "if Yes one Fingerprint Devices will be available",
+   "fieldname": "activate_fingerprint",
+   "fieldtype": "Select",
+   "label": "Use Fingerprint Devices",
+   "options": "Yes\nNo"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Customer System",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "collapsible_depends_on": "eval: doc.status != \"Created\"",
+   "depends_on": "eval: doc.status == \"Created\"",
+   "fieldname": "usage_info_section",
+   "fieldtype": "Section Break",
+   "label": "Usage Info"
+  },
+  {
+   "fieldname": "usage_info_html",
+   "fieldtype": "HTML",
+   "label": "Usage Info"
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2022-07-14 14:40:37.723217",
+ "modified_by": "Administrator",
+ "module": "ERPNext as a Service",
+ "name": "Customer System",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Site Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "title"
+}

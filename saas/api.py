@@ -19,8 +19,7 @@ def delete_account(doc, method):
 
 @frappe.whitelist()
 def create_site(site):
-    site = frappe.get_doc("Site", site)
-    cmd = ["bench", "new-site", "--db-name", site.name, "--mariadb-root-username", "root", "--mariadb-root-password", 'password', "--admin-password", "logic", "--install-app", "erpnext","--install-app", "saas_manager", site.title]
+    cmd = ["bench", "new-site", "--db-name", self.title, "--mariadb-root-username", "root", "--mariadb-root-password", 'password', "--admin-password", "logic", "--install-app", "erpnext", self.title]
     p = subprocess.Popen(cmd, stdout = subprocess.PIPE,
                                         stderr=subprocess.PIPE,
                                         stdin=subprocess.PIPE,

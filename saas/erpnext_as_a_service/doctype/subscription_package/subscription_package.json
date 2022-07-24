@@ -1,0 +1,309 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:package_title",
+ "creation": "2022-04-03 22:54:00.206847",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "package_details_section",
+  "package_title",
+  "package_type",
+  "technical_support",
+  "column_break_3",
+  "default_storage_space",
+  "allow_to_update_storage",
+  "available_users",
+  "allow_to_add_users",
+  "company_section",
+  "manage_more_than_one_company",
+  "archive_and_document_management",
+  "reports",
+  "custody_management",
+  "letters",
+  "column_break_9",
+  "define_departments",
+  "define_branches",
+  "contract_managements",
+  "vehicle_management",
+  "training_management",
+  "employee_section",
+  "define_employees_and_personal_details",
+  "social_insurance",
+  "employment_management",
+  "column_break_23",
+  "self_service",
+  "employee_performance_evaluation",
+  "payroll_and_leaves_section",
+  "payroll_management",
+  "end_of_service_and_dues",
+  "column_break_27",
+  "leaves_management",
+  "attendance_departure",
+  "system_section",
+  "role_and_permissions_management",
+  "user_logs",
+  "column_break_39",
+  "report_generator",
+  "electronic_forms"
+ ],
+ "fields": [
+  {
+   "fieldname": "package_title",
+   "fieldtype": "Data",
+   "label": "Package Title",
+   "unique": 1
+  },
+  {
+   "fieldname": "package_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Package Type",
+   "options": "\nEnterprise\nPlatinum\nPremium",
+   "reqd": 1
+  },
+  {
+   "default": "500",
+   "fieldname": "default_storage_space",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Default Storage Space ( MB )",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "social_insurance",
+   "fieldtype": "Check",
+   "label": "Social Insurance"
+  },
+  {
+   "default": "0",
+   "description": "Including Loans, Advances, Overtime and Other dues",
+   "fieldname": "payroll_management",
+   "fieldtype": "Check",
+   "label": "Payroll Management"
+  },
+  {
+   "default": "1",
+   "fieldname": "reports",
+   "fieldtype": "Check",
+   "label": "Reports"
+  },
+  {
+   "default": "0",
+   "fieldname": "report_generator",
+   "fieldtype": "Check",
+   "label": "Report Generator"
+  },
+  {
+   "default": "1",
+   "fieldname": "self_service",
+   "fieldtype": "Check",
+   "label": "Enable Self Service"
+  },
+  {
+   "default": "0",
+   "fieldname": "vehicle_management",
+   "fieldtype": "Check",
+   "label": "Vehicle Management"
+  },
+  {
+   "default": "1",
+   "fieldname": "technical_support",
+   "fieldtype": "Check",
+   "label": "Technical support"
+  },
+  {
+   "default": "0",
+   "description": "Include Reports",
+   "fieldname": "attendance_departure",
+   "fieldtype": "Check",
+   "label": "Attendance and Departure"
+  },
+  {
+   "default": "0",
+   "fieldname": "electronic_forms",
+   "fieldtype": "Check",
+   "label": "Create Electronic Forms"
+  },
+  {
+   "default": "2",
+   "fieldname": "available_users",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Available Users",
+   "reqd": 1
+  },
+  {
+   "default": "1",
+   "fieldname": "define_departments",
+   "fieldtype": "Check",
+   "label": "Define Departments"
+  },
+  {
+   "fieldname": "company_section",
+   "fieldtype": "Section Break",
+   "label": "Company"
+  },
+  {
+   "default": "0",
+   "fieldname": "manage_more_than_one_company",
+   "fieldtype": "Check",
+   "label": "Manage More Than One Company"
+  },
+  {
+   "default": "0",
+   "fieldname": "archive_and_document_management",
+   "fieldtype": "Check",
+   "label": "Archive And Document Management"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "define_branches",
+   "fieldtype": "Check",
+   "label": "Define Branches"
+  },
+  {
+   "default": "1",
+   "fieldname": "letters",
+   "fieldtype": "Check",
+   "label": "Letters"
+  },
+  {
+   "fieldname": "package_details_section",
+   "fieldtype": "Section Break",
+   "label": "Package Details"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_to_update_storage",
+   "fieldtype": "Check",
+   "label": "Allow to Update Storage"
+  },
+  {
+   "default": "0",
+   "fieldname": "allow_to_add_users",
+   "fieldtype": "Check",
+   "label": "Allow to Add Users"
+  },
+  {
+   "default": "1",
+   "fieldname": "custody_management",
+   "fieldtype": "Check",
+   "label": "Custody Management"
+  },
+  {
+   "fieldname": "employee_section",
+   "fieldtype": "Section Break",
+   "label": "Employee"
+  },
+  {
+   "default": "0",
+   "fieldname": "define_employees_and_personal_details",
+   "fieldtype": "Check",
+   "label": "Define Employees And Personal Details"
+  },
+  {
+   "default": "1",
+   "fieldname": "contract_managements",
+   "fieldtype": "Check",
+   "label": "Contract Managements"
+  },
+  {
+   "default": "1",
+   "fieldname": "end_of_service_and_dues",
+   "fieldtype": "Check",
+   "label": "End of Service and dues"
+  },
+  {
+   "fieldname": "payroll_and_leaves_section",
+   "fieldtype": "Section Break",
+   "label": "Payroll and Leaves"
+  },
+  {
+   "fieldname": "column_break_27",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "leaves_management",
+   "fieldtype": "Check",
+   "label": "Leaves Management"
+  },
+  {
+   "fieldname": "column_break_23",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "employee_performance_evaluation",
+   "fieldtype": "Check",
+   "label": "Employee Performance Evaluation"
+  },
+  {
+   "default": "0",
+   "fieldname": "training_management",
+   "fieldtype": "Check",
+   "label": "Training Management"
+  },
+  {
+   "default": "0",
+   "fieldname": "employment_management",
+   "fieldtype": "Check",
+   "label": "Employment Management"
+  },
+  {
+   "fieldname": "system_section",
+   "fieldtype": "Section Break",
+   "label": "System"
+  },
+  {
+   "fieldname": "column_break_39",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "role_and_permissions_management",
+   "fieldtype": "Check",
+   "label": "Role and Permissions Management"
+  },
+  {
+   "default": "0",
+   "fieldname": "user_logs",
+   "fieldtype": "Check",
+   "label": "User Logs"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2022-06-20 15:06:07.569787",
+ "modified_by": "Administrator",
+ "module": "ERPNext as a Service",
+ "name": "Subscription Package",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
