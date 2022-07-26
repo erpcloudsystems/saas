@@ -10,13 +10,15 @@ frappe.listview_settings['Customer System'] = {
 
 			'Creation In Process': 'orange',
 			'Deletion In Process': 'orange',
+			'Stoping In Process': 'orange',
 
 			'Created': 'green',
 			
 			'Creation Error': 'red',
 			'Deletion Error': 'red',
 
-			'Deleted': 'pink'
+			'Deleted': 'pink',
+			'Suspended': 'pink'
 		};
 		let status = doc.status;
 		return [__(status), colors[status], 'status,=,' + doc.status];

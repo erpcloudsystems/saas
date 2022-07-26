@@ -28,6 +28,10 @@ frappe.ui.form.on('Customer System', {
                 frm.add_custom_button(__('Delete site'), function () { frm.trigger("delete_site") });
                 frm.add_custom_button(__('Suspend site'), function () { frm.trigger("suspend_site") });
             }
+            if (["Suspended"].includes(frm.doc.status)) {
+                frm.add_custom_button(__('Delete site'), function () { frm.trigger("delete_site") });
+                frm.add_custom_button(__('Resume site'), function () { frm.trigger("resume_site") });
+            }
         }
     },
     create_site: function (frm) {
@@ -59,7 +63,58 @@ frappe.ui.form.on('Customer System', {
         
         d.show();
     },
+    resume_site: function(frm){
+        let d = new frappe.ui.Dialog({
+            title: __(`Resume Site ${frm.doc.title}`),
+            fields: [
+                {
+                    label: __('User Password'),
+                    fieldname: 'admin_pass',
+                    fieldtype: 'Password',
+                    reqd: 1,
+                }
+            ],
+            primary_action_label: __(`Resume`),
+            primary_action(values) {
+                if(values && values.admin_pass){
+                    cur_frm.events.call_api(frm, 'resume_site', values, "", "site resuming successfully")
+                }
+                d.hide();
+            }
+        });
+        
+        d.show();
+    },
+    suspend_site: function(frm){
+        let d = new frappe.ui.Dialog({
+            title: __(`Stop Site ${frm.doc.title}`),
+            fields: [
+                {
+                    label: __('User Password'),
+                    fieldname: 'admin_pass',
+                    fieldtype: 'Password',
+                    reqd: 1,
+                },
+                {
+                    label: __(`To confirm suspension, type <i>suspend ${frm.doc.title}</i> in the field.`),
+                    fieldname: 'confirm_msg',
+                    fieldtype: 'Data',
+                    reqd: 1,
+                }
+            ],
+            primary_action_label: __(`Stop`),
+            primary_action(values) {
+                if(values && values.admin_pass && values.confirm_msg){
+                    cur_frm.events.call_api(frm, 'suspend_site', values, "start site stoping", "site stoped successfully")
+                }
+                d.hide();
+            }
+        });
+        
+        d.show();
+    },
     notify_client: function (frm) {
+        return
         cur_frm.events.call_api(frm, 'notify_client', "send email to client", "client notified successfully")
     },
     delete_site: function (frm) {

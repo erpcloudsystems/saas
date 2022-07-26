@@ -48,8 +48,7 @@ class CustomerSystem(Document):
         if self.docstatus != 1:
             frappe.throw(_("Submite the data before create customer site"))
             return
-
-        if self.status in ['Created', 'Trial', 'Deleted', 'Suspended', 'In Process']:
+        if self.status not in ['Pending Approval', 'Email Sent', 'Site Verified']:
             frappe.throw(_("can not create site for {} site".format(self.status)))
             return
 
@@ -67,11 +66,27 @@ class CustomerSystem(Document):
         enqueue(create_site_job, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass, admin_pass=admin_pass, config=config)
         return 'In Process'
 
-    def update_config(self):
-        pass
-    
     @frappe.whitelist()
     def delete_site(self, db_pass, admin_pass, confirm_msg, force=False):
+        # 'Pending Approval': 'blue',
+
+		# 	'Creation In Process': 'orange',
+		# 	'Deletion In Process': 'orange',
+		# 	'Stoping In Process': 'orange',
+
+		# 	'Created': 'green',
+			
+		# 	'Creation Error': 'red',
+		# 	'Deletion Error': 'red',
+
+		# 	'Deleted': 'pink',
+		# 	'Suspended': 'pink'
+        if self.status not in ['Pending Approval', 'Created', 'Suspended', 'Email Sent', 'Site Verified']:
+            frappe.throw(_("can not delete site for {} site".format(self.status)))
+            return
+        if self.status in ['Creation In Process', '', '', '' ,'']:
+            frappe.throw(_("can not create site for {} site".format(self.status)))
+            return
         from frappe.utils.password import check_password
         try:
             user = check_password(frappe.session.user, admin_pass)
@@ -86,9 +101,35 @@ class CustomerSystem(Document):
         enqueue(delete_site_job, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass)
         return "Delete"
     
-    def suspend_site(self, confirm_msg, logout_all_users=True):
-        pass
+    @frappe.whitelist()
+    def suspend_site(self, confirm_msg, admin_pass, logout_all_users=True):
+        from frappe.utils.password import check_password
+        try:
+            user = check_password(frappe.session.user, admin_pass)
+        except:
+            frappe.throw(_("Incorrect user password"))
+            return
+        default_conf = "suspend {}".format(self.title)
+        if confirm_msg != default_conf:
+            frappe.throw(_("To confirm deletion, type <i>{}</i> in the confirmation message".format(default_conf)))
+            return
+        
+        self.db_set('status', 'Stoping In Process', update_modified=False)
+        enqueue(stoping_site_job, site_doc=self, site_name=self.title)
+        return "Stoping"
     
+    @frappe.whitelist()
+    def resume_site(self, admin_pass, logout_all_users=True):
+        from frappe.utils.password import check_password
+        try:
+            user = check_password(frappe.session.user, admin_pass)
+        except:
+            frappe.throw(_("Incorrect user password"))
+            return
+        self.db_set('status', 'Resuming In Process', update_modified=False)
+        enqueue(resume_site_job, site_doc=self, site_name=self.title)
+        return "Resuming"
+        
     def restart_site(self, confirm_msg, from_date, to_date):
         pass
     
@@ -136,6 +177,11 @@ class CustomerSystem(Document):
             'actual_available_users': self.available_users,
             'available_companies': self.available_companies,
             'maintenance_mode': 0,
+            'is_suspended': 0,
+            'abbr': self.abbr,
+            'country': self.country,
+            'currency': self.currency,
+            'customer': self.customer_lead,
         })
         return config
 
@@ -205,3 +251,16 @@ def clean_failed_site_creation(site_name, db_pass):
         shutil.rmtree(site_path)
     except: pass
 
+def stoping_site_job(site_doc, site_name):
+    config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
+    try:
+        update_site_config('is_suspended', 1, site_config_path=config_path)
+    except: pass
+    site_doc.db_set('status', 'Suspended', update_modified=False)
+
+def resume_site_job(site_doc, site_name):
+    config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
+    try:
+        update_site_config('is_suspended', 0, site_config_path=config_path)
+    except: pass
+    site_doc.db_set('status', 'Created', update_modified=False)

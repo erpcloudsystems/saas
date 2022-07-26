@@ -12,6 +12,8 @@
   "customer_lead",
   "company",
   "abbr",
+  "country",
+  "currency",
   "column_break_6",
   "mobile_number",
   "email_address",
@@ -208,11 +210,25 @@
    "fieldtype": "Data",
    "label": "Abbr",
    "reqd": 1
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country",
+   "reqd": 1
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "reqd": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-24 16:38:44.514532",
+ "modified": "2022-07-26 15:21:24.610985",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Customer System",
