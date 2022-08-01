@@ -1,6 +1,18 @@
 {
+ "cards_label": "ERPNext as Service",
  "category": "Modules",
- "charts": [],
+ "charts": [
+  {
+   "chart_name": "SaaS Customer Systems"
+  },
+  {
+   "chart_name": "Customer Packages"
+  },
+  {
+   "chart_name": "Packages"
+  }
+ ],
+ "charts_label": "Statistics",
  "creation": "2022-06-21 15:09:04.043986",
  "developer_mode_only": 0,
  "disable_user_customization": 0,
@@ -14,8 +26,62 @@
  "is_default": 0,
  "is_standard": 1,
  "label": "SaaS",
- "links": [],
- "modified": "2022-06-21 15:12:38.120746",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "ERPNext as Service",
+   "link_to": "",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer",
+   "link_to": "Customer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Subscription Package",
+   "link_to": "Subscription Package",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer System",
+   "link_to": "Customer System",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Errors Tracking",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer System Logs",
+   "link_to": "Customer System Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2022-07-31 16:09:09.668016",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "SaaS",

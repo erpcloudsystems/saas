@@ -49,7 +49,7 @@
    "fieldtype": "Select",
    "label": "Status",
    "no_copy": 1,
-   "options": "Pending Approval\nEmail Sent\nVerified\nIn Process\nCreated\nTrial\nDeleted\nSuspended",
+   "options": "Pending\nEmail Sent\nVerified\nIn Process\nTrial\nCreated\nCreation Error\nDeleted\nDeletion Error\nSuspended",
    "read_only": 1,
    "reqd": 1
   },
@@ -228,7 +228,7 @@
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-07-26 15:21:24.610985",
+ "modified": "2022-07-31 16:03:18.222560",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Customer System",

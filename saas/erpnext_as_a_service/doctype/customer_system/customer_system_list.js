@@ -6,7 +6,7 @@ frappe.listview_settings['Customer System'] = {
 	onload(listview) {},
 	get_indicator: function(doc) {
 		var colors = {
-			'Pending Approval': 'blue',
+			'Pending': 'blue',
 
 			'Creation In Process': 'orange',
 			'Deletion In Process': 'orange',

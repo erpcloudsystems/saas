@@ -3,6 +3,7 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from codecs import ignore_errors
 import subprocess
 import os
 import shutil
@@ -48,7 +49,7 @@ class CustomerSystem(Document):
         if self.docstatus != 1:
             frappe.throw(_("Submite the data before create customer site"))
             return
-        if self.status not in ['Pending Approval', 'Email Sent', 'Site Verified']:
+        if self.status not in ['Pending', 'Email Sent', 'Site Verified']:
             frappe.throw(_("can not create site for {} site".format(self.status)))
             return
 
@@ -68,7 +69,7 @@ class CustomerSystem(Document):
 
     @frappe.whitelist()
     def delete_site(self, db_pass, admin_pass, confirm_msg, force=False):
-        # 'Pending Approval': 'blue',
+        # 'Pending': 'blue',
 
 		# 	'Creation In Process': 'orange',
 		# 	'Deletion In Process': 'orange',
@@ -81,7 +82,7 @@ class CustomerSystem(Document):
 
 		# 	'Deleted': 'pink',
 		# 	'Suspended': 'pink'
-        if self.status not in ['Pending Approval', 'Created', 'Suspended', 'Email Sent', 'Site Verified']:
+        if self.status not in ['Pending', 'Created', 'Suspended', 'Email Sent', 'Site Verified']:
             frappe.throw(_("can not delete site for {} site".format(self.status)))
             return
         if self.status in ['Creation In Process', '', '', '' ,'']:
@@ -195,6 +196,8 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         "--admin-password", admin_pass,
         "--install-app", "erpnext",
         "--install-app", "saas_manager",
+        "--install-app", "mosyr",
+        "--install-app", "mosyr_theme",
         site_name
     ]
     
@@ -212,6 +215,7 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
     else:
         # Everything works as expected
         site_doc.db_set('status', 'Created', update_modified=False)
+        create_logs(site_doc.name, 'Create')
         config_path = os.path.join(get_bench_path(), 'sites', site_doc.title, "site_config.json")
         for k, v in config.items():
             update_site_config(f'{k}', v, site_config_path=config_path)
@@ -228,12 +232,14 @@ def delete_site_job(site_doc, site_name, db_user, db_pass):
         #     raise Exception("Faild To Delete Site {}\n\n{}".format(site_name, p.stderr))
     except frappe.exceptions.IncorrectSitePath:
         site_doc.db_set('status', 'Deleted', update_modified=False)
+        create_logs(site_doc.name, 'Delete')
     except Exception as e:
         site_doc.db_set('status', 'Deletion Error', update_modified=False)
         frappe.log_error(e, "Faild To Delete Site")
     else:
         # Everything works as expected
         site_doc.db_set('status', 'Deleted', update_modified=False)
+        create_logs(site_doc.name, 'Delete')
 
 def clean_failed_site_creation(site_name, db_pass):
     cmd = ["bench", "drop-site","--root-password", db_pass, site_name]
@@ -257,6 +263,7 @@ def stoping_site_job(site_doc, site_name):
         update_site_config('is_suspended', 1, site_config_path=config_path)
     except: pass
     site_doc.db_set('status', 'Suspended', update_modified=False)
+    create_logs(site_doc.name, 'Stop')
 
 def resume_site_job(site_doc, site_name):
     config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
@@ -264,3 +271,14 @@ def resume_site_job(site_doc, site_name):
         update_site_config('is_suspended', 0, site_config_path=config_path)
     except: pass
     site_doc.db_set('status', 'Created', update_modified=False)
+    create_logs(site_doc.name, 'Resume')
+
+def create_logs(site_doc_name, action):
+    logs = frappe.new_doc('Customer System Log')
+    logs.customer_system = site_doc_name
+    logs.action = action
+    logs.user = frappe.session.user
+    logs.action_date = frappe.utils.now_datetime()
+    logs.save(ignore_permissions=True)
+    logs.submit()
+    frappe.db.commit()

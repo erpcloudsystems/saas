@@ -10,7 +10,7 @@ frappe.ui.form.on('Customer System', {
     refresh: function (frm) {
         frm.trigger('set_label')
         if (frm.doc.docstatus == 1) {
-            if (["Pending Approval", "Email Sent", "Site Verified"].includes(frm.doc.status)) {
+            if (["Pending", "Email Sent", "Site Verified"].includes(frm.doc.status)) {
                 frm.add_custom_button(__('Create site'), function () { frm.trigger("create_site") });
             }
             if(["Deletion Error"].includes(frm.doc.status)){
@@ -20,7 +20,7 @@ frappe.ui.form.on('Customer System', {
                 frm.add_custom_button(__('Re-Create site'), function () { frm.trigger("create_site") });
                 frm.add_custom_button(__('Delete site'), function () { frm.trigger("delete_site") });
             }
-            if (frm.doc.status == "Pending Approval") {
+            if (frm.doc.status == "Pending") {
                 frm.add_custom_button(__('Notify Client'), function () { frm.trigger("notify_client") });
             }
 
