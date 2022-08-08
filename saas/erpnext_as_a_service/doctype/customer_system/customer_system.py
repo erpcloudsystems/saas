@@ -47,9 +47,9 @@ class CustomerSystem(Document):
             return
         
         if self.docstatus != 1:
-            frappe.throw(_("Submite the data before create customer site"))
+            frappe.throw(_("Submite the form before create customer site"))
             return
-        if self.status not in ['Pending', 'Email Sent', 'Site Verified', 'Creation Error']:
+        if not (self.status in ['Pending', 'Email Sent', 'Site Verified', 'Creation Error']):
             frappe.throw(_("can not create site for {} site".format(self.status)))
             return
 
