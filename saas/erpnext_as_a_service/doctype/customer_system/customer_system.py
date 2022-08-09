@@ -50,9 +50,9 @@ class CustomerSystem(Document):
             frappe.throw(_("Submite the form before create customer site"))
             return
 
-        if not (self.status in ['Pending', 'Email Sent', 'Site Verified', 'Creation Error']):
-            frappe.throw(_("can not create site for {} site".format(self.status)))
-            return
+        # if not (self.status in ['Pending', 'Email Sent', 'Site Verified', 'Creation Error']):
+        #     frappe.throw(_("can not create site for {} site".format(self.status)))
+        #     return
 
         # check sites in the system
         used_sites_names = list(filter(lambda x: x not in ['apps.txt', 'currentsite.txt', 'common_site_config.json'], os.listdir(get_bench_path()+'/sites')))
