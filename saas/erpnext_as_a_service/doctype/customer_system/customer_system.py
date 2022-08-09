@@ -50,9 +50,9 @@ class CustomerSystem(Document):
             frappe.throw(_("Submite the form before create customer site"))
             return
 
-        # if not (self.status in ['Pending', 'Email Sent', 'Site Verified', 'Creation Error']):
-        #     frappe.throw(_("can not create site for {} site".format(self.status)))
-        #     return
+        if self.status not in ['Pending', 'Email Sent', 'Site Verified', 'Creation Error']:
+            frappe.throw(_("Can not create site for {} site".format(self.status)))
+            return
 
         # check sites in the system
         used_sites_names = list(filter(lambda x: x not in ['apps.txt', 'currentsite.txt', 'common_site_config.json'], os.listdir(get_bench_path()+'/sites')))
@@ -70,25 +70,10 @@ class CustomerSystem(Document):
 
     @frappe.whitelist()
     def delete_site(self, db_pass, admin_pass, confirm_msg, force=False):
-        # 'Pending': 'blue',
-
-		# 	'Creation In Process': 'orange',
-		# 	'Deletion In Process': 'orange',
-		# 	'Stoping In Process': 'orange',
-
-		# 	'Created': 'green',
-			
-		# 	'Creation Error': 'red',
-		# 	'Deletion Error': 'red',
-
-		# 	'Deleted': 'pink',
-		# 	'Suspended': 'pink'
         if self.status not in ['Pending', 'Created', 'Suspended', 'Email Sent', 'Site Verified']:
             frappe.throw(_("can not delete site for {} site".format(self.status)))
             return
-        if self.status in ['Creation In Process', '', '', '' ,'']:
-            frappe.throw(_("can not create site for {} site".format(self.status)))
-            return
+
         from frappe.utils.password import check_password
         try:
             user = check_password(frappe.session.user, admin_pass)
