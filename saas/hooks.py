@@ -70,11 +70,6 @@ app_license = "MIT"
 # ---------------
 # Hook on document methods and events
 
-doc_events = {
- 	"*": {
-		"on_update": "saas.io_connector._socketio_connector"
-	}
-}
 # doc_events = {
 # 	"*": {
 # 		"on_update": "method",
@@ -86,7 +81,11 @@ doc_events = {
 
 # Scheduled Tasks
 # ---------------
-
+# scheduler_events = {
+# 	"daily": [
+# 		"saas.tasks.daily"
+# 	]
+# }
 # scheduler_events = {
 # 	"all": [
 # 		"saas.tasks.all"

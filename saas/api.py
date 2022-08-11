@@ -120,3 +120,29 @@ def set_config_site(site):
     update_site_config('company',site.company,site_config_path = site_config_path)
     update_site_config('company_limit',site.number_companies,site_config_path = site_config_path)
     update_site_config("skip_setup_wizard",1,site_config_path = site_config_path)
+
+
+@frappe.whitelist(allow_guest=True)
+def open_client_issue(*args, **kwargs):
+    fields = ('subject', 'issue_type', 'issue_date', 'company_name', 'user_name', 'user_email', 'description', 'name')
+    new_issue = frappe.new_doc('Client Issue')
+    for k, v in kwargs.items():
+        if k in fields:
+            if k == 'name':
+                k = 'tech_support_name'
+            new_issue.update({
+                k: v or ''
+            })
+    new_issue.flags.ignore_mandatory = True
+    new_issue.save(ignore_permissions=True)
+    new_issue.submit()
+    frappe.db.commit()
+
+@frappe.whitelist(allow_guest=True)
+def complete_client_issue(*args, **kwargs):
+    
+    name = kwargs.get('name', False)
+    if not name: return
+    for ci in frappe.get_list('Client Issue', filters={'status': 'Open', 'docstatus': 1, 'tech_support_name': name}):
+        ci = frappe.get_doc('Client Issue', ci.name)
+        ci.mark_complete(check_user=False)
