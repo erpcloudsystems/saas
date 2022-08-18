@@ -17,6 +17,7 @@
   "company_name",
   "user_name",
   "user_email",
+  "ticket_url",
   "tech_support_name",
   "amended_from"
  ],
@@ -104,12 +105,17 @@
    "options": "Client Issue",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "ticket_url",
+   "fieldtype": "Read Only",
+   "label": "Ticket URL"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2022-08-10 12:55:28.297871",
+ "modified": "2022-08-18 15:56:06.820156",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Client Issue",

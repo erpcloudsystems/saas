@@ -124,7 +124,7 @@ def set_config_site(site):
 
 @frappe.whitelist(allow_guest=True)
 def open_client_issue(*args, **kwargs):
-    fields = ('subject', 'issue_type', 'issue_date', 'company_name', 'user_name', 'user_email', 'description', 'name')
+    fields = ('subject', 'issue_type', 'issue_date', 'company_name', 'user_name', 'user_email', 'description', 'name', 'ticket_url')
     new_issue = frappe.new_doc('Client Issue')
     for k, v in kwargs.items():
         if k in fields:
