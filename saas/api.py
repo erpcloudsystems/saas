@@ -141,6 +141,24 @@ def open_client_issue(*args, **kwargs):
     frappe.db.commit()
 
 @frappe.whitelist(allow_guest=True)
+def create_client_issue(*args, **kwargs):
+    if len(args) == 1: data = args[0]
+    elif kwargs: data = kwargs
+    fields = ['subject', 'issue_type', 'issue_date', 'company_name', 'user_name', 'user_email', 'description', 'name', 'ticket_url']
+    new_issue = frappe.new_doc('Client Issue')
+    for k, v in data.items():
+        if k in fields:
+            if k == 'name':
+                k = 'tech_support_name'
+            new_issue.update({
+                k: v or ''
+            })
+    new_issue.flags.ignore_mandatory = True
+    new_issue.save(ignore_permissions=True)
+    new_issue.submit()
+    frappe.db.commit()
+
+@frappe.whitelist(allow_guest=True)
 def complete_client_issue(*args, **kwargs):
     
     name = kwargs.get('name', False)
