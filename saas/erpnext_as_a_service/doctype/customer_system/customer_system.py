@@ -15,6 +15,7 @@ from frappe.utils import flt, cint, get_bench_path
 from frappe.utils.background_jobs import enqueue
 
 from saas.api import write_site_config
+from frappe.installer import update_site_config
 
 class CustomerSystem(Document):
     def validate(self):
@@ -176,7 +177,6 @@ class CustomerSystem(Document):
 def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
     for k, v in config.items():
         write_site_config(site_name, f'{k}', v,)
-
     admin_pass = f"{admin_pass}"
     cmd = [
         "bench", "new-site",
@@ -206,6 +206,9 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         # Everything works as expected
         site_doc.db_set('status', 'Created', update_modified=False)
         create_logs(site_doc.name, 'Create')
+        config_path = os.path.join(get_bench_path(), 'sites', site_doc.title, "site_config.json")
+        for k, v in config.items():
+            update_site_config(f'{k}', v, site_config_path=config_path)
 
 def delete_site_job(site_doc, site_name, db_user, db_pass):
     cmd = ["bench", "drop-site","--root-password", db_pass, "--force", site_name]
@@ -245,14 +248,18 @@ def clean_failed_site_creation(site_name, db_pass):
 
 def stoping_site_job(site_doc, site_name):
     try:
-        write_site_config(site_name, 'is_suspended', 1)
+        config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
+        update_site_config('is_suspended', 1, site_config_path=config_path)
+        # write_site_config(site_name, 'is_suspended', 1)
     except: pass
     site_doc.db_set('status', 'Suspended', update_modified=False)
     create_logs(site_doc.name, 'Stop')
 
 def resume_site_job(site_doc, site_name):
     try:
-        write_site_config(site_name, 'is_suspended', 0)
+        config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
+        update_site_config('is_suspended', 0, site_config_path=config_path)
+        # write_site_config(site_name, 'is_suspended', 0)
     except: pass
     site_doc.db_set('status', 'Created', update_modified=False)
     create_logs(site_doc.name, 'Resume')
