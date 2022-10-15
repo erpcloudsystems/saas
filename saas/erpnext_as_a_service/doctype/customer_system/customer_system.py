@@ -176,6 +176,7 @@ class CustomerSystem(Document):
 
 def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
     for k, v in config.items():
+        if k == 'admin_user_pass': continue
         write_site_config(site_name, f'{k}', v,)
     admin_pass = f"{admin_pass}"
     cmd = [
