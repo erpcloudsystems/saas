@@ -199,14 +199,12 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         frappe.log_error(e, "Faild To Create Site")
         clean_failed_site_creation(site_name, db_pass)
     else:
-        # Everything works as expected
-        site_doc.db_set('status', 'Created', update_modified=False)
-        create_logs(site_doc.name, 'Create')
+        # Update Site config
         config_path = os.path.join(get_bench_path(), 'sites', site_doc.title, "site_config.json")
         for k, v in config.items():
             update_site_config(f'{k}', v, site_config_path=config_path)
         
-        # install apps after setup site config
+        # install apps after update site config
         cmd = [
             "bench", f"--site {site_name}", "install-app", "saas_manager mosyr mosyr_theme"
         ]
@@ -217,9 +215,14 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
             )
             if p.returncode != 0:
                 raise Exception("Faild To Create Site {}\n\n{} \n Can not install SaaS Maanger".format(site_name, p.stderr))
-        except Exception as e: pass
-        
-
+        except Exception as e:
+            site_doc.db_set('status', 'Creation Error', update_modified=False)
+            frappe.log_error(e, "Faild To Create Site Due to install Apps")
+            clean_failed_site_creation(site_name, db_pass)
+        else:
+            # Everything works as expected
+            site_doc.db_set('status', 'Created', update_modified=False)
+            create_logs(site_doc.name, 'Create')
 
 def delete_site_job(site_doc, site_name, db_user, db_pass):
     cmd = ["bench", "drop-site","--root-password", db_pass, "--force", site_name]
