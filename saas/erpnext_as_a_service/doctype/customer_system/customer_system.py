@@ -208,7 +208,7 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         
         # install apps after setup site config
         cmd = [
-            "bench", "install-app", f"--site {site_name}", "saas_manager mosyr mosyr_theme"
+            "bench", f"--site {site_name}", "install-app", "saas_manager mosyr mosyr_theme"
         ]
         try:
             p = subprocess.run(cmd,
