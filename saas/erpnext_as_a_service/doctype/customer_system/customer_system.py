@@ -181,9 +181,9 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         "--mariadb-root-password", db_pass,
         "--admin-password", admin_pass,
         "--install-app", "erpnext",
-        "--install-app", "saas_manager",
-        "--install-app", "mosyr",
-        "--install-app", "mosyr_theme",
+        # "--install-app", "saas_manager",
+        # "--install-app", "mosyr",
+        # "--install-app", "mosyr_theme",
         site_name
     ]
     
@@ -205,6 +205,20 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         config_path = os.path.join(get_bench_path(), 'sites', site_doc.title, "site_config.json")
         for k, v in config.items():
             update_site_config(f'{k}', v, site_config_path=config_path)
+        
+        # install apps after setup site config
+        cmd = [
+            "bench", "install-app", f"--site {site_name}", "saas_manager mosyr mosyr_theme"
+        ]
+        try:
+            p = subprocess.run(cmd,
+                capture_output=True,
+                cwd=get_bench_path()
+            )
+            if p.returncode != 0:
+                raise Exception("Faild To Create Site {}\n\n{} \n Can not install SaaS Maanger".format(site_name, p.stderr))
+        except Exception as e: pass
+        
 
 
 def delete_site_job(site_doc, site_name, db_user, db_pass):
