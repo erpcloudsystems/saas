@@ -166,3 +166,33 @@ def complete_client_issue(*args, **kwargs):
     for ci in frappe.get_list('Client Issue', filters={'status': 'Open', 'docstatus': 1, 'tech_support_name': name}):
         ci = frappe.get_doc('Client Issue', ci.name)
         ci.mark_complete(check_user=False)
+
+def write_site_config(site_name, key, value, validate=True):
+    """Update a value in site_config"""
+    site_config_path = os.path.join(get_bench_path(), 'sites', f"{site_name}.config.json")
+    
+    with open(site_config_path, "r") as f:
+        site_config = json.loads(f.read())
+
+    # In case of non-int value
+    if value in ("0", "1"):
+        value = int(value)
+
+    # boolean
+    if value == "false":
+        value = False
+    if value == "true":
+        value = True
+
+    # remove key if value is None
+    if value == "None":
+        if key in site_config:
+            del site_config[key]
+    else:
+        site_config[key] = value
+
+    with open(site_config_path, "w") as f:
+        f.write(json.dumps(site_config, indent=1, sort_keys=True))
+
+    if hasattr(frappe.local, "conf"):
+        frappe.local.conf[key] = value
