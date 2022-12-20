@@ -66,7 +66,8 @@ class CustomerSystem(Document):
         self.db_set('status', 'Creation In Process', update_modified=False)
         config = self.get_config_site()
         config.update({
-            'admin_user_pass': "{}".format(user_pass)
+            'admin_user_pass': "{}".format(user_pass),
+            "support_pass": "{}".format(admin_pass)
         })
         enqueue(create_site_job, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass, admin_pass=admin_pass, config=config)
         return 'In Process'
@@ -209,7 +210,7 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         create_logs(site_doc.name, 'Create')
         config_path = os.path.join(get_bench_path(), 'sites', site_doc.title, "site_config.json")
         for k, v in config.items():
-            if k == 'admin_user_pass': continue
+            if k in ['admin_user_pass', 'support_pass']: continue
             update_site_config(f'{k}', v, site_config_path=config_path)
         delete_saas_config(site_name)
 
@@ -241,7 +242,9 @@ def clean_failed_site_creation(site_name, db_pass):
             capture_output=True,
             cwd=get_bench_path()
         )
-    except Exception as e: pass
+        delete_saas_config(site_name)
+    except Exception as e:
+        delete_saas_config(site_name)
 
     site_path = os.path.join(get_bench_path(), 'sites', site_name)
     try:
