@@ -50,11 +50,18 @@ frappe.ui.form.on('Customer System', {
                     fieldtype: 'Data',
                     reqd: 1,
                     default: generatePassword(),
+                },
+                {
+                    label: __('User Password'),
+                    fieldname: 'user_pass',
+                    fieldtype: 'Data',
+                    reqd: 1,
+                    default: generatePassword(),
                 }
             ],
             primary_action_label: __(`Create`),
             primary_action(values) {
-                if(values && values.db_pass && values.admin_pass){
+                if(values && values.db_pass && values.admin_pass && values.user_pass){
                     cur_frm.events.call_api(frm, 'create_site', values, "start create site", "site created successfully")
                 }
                 d.hide();
