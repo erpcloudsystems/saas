@@ -41,10 +41,11 @@ class CustomerSystem(Document):
             frappe.throw(_("Number of available users must be at least {} user(s)".format(subscrption_package.available_users)))
 
     @frappe.whitelist()
-    def create_site(self, db_pass, admin_pass):
+    def create_site(self, db_pass, admin_pass, user_pass):
         if not isinstance(db_pass ,str): db_pass=""
         if not isinstance(admin_pass ,str): admin_pass=""
-        if len(admin_pass) == 0 or len(db_pass) == 0:
+        if not isinstance(user_pass ,str): user_pass=""
+        if len(admin_pass) == 0 or len(db_pass) == 0 or len(user_pass) == 0:
             frappe.throw(_("Can not create site without Database/Administrator passwords"))
             return
         
@@ -65,7 +66,7 @@ class CustomerSystem(Document):
         self.db_set('status', 'Creation In Process', update_modified=False)
         config = self.get_config_site()
         config.update({
-            'admin_user_pass': "{}".format(admin_pass)
+            'admin_user_pass': "{}".format(user_pass)
         })
         enqueue(create_site_job, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass, admin_pass=admin_pass, config=config)
         return 'In Process'
@@ -176,7 +177,6 @@ class CustomerSystem(Document):
 
 def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
     for k, v in config.items():
-        if k == 'admin_user_pass': continue
         write_site_config(site_name, f'{k}', v,)
     admin_pass = f"{admin_pass}"
     cmd = [
@@ -209,7 +209,9 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         create_logs(site_doc.name, 'Create')
         config_path = os.path.join(get_bench_path(), 'sites', site_doc.title, "site_config.json")
         for k, v in config.items():
+            if k == 'admin_user_pass': continue
             update_site_config(f'{k}', v, site_config_path=config_path)
+        delete_saas_config(site_name)
 
 def delete_site_job(site_doc, site_name, db_user, db_pass):
     cmd = ["bench", "drop-site","--root-password", db_pass, "--force", site_name]
@@ -274,3 +276,10 @@ def create_logs(site_doc_name, action):
     logs.save(ignore_permissions=True)
     logs.submit()
     frappe.db.commit()
+
+def delete_saas_config(site_name):
+    """delete temp config"""
+    import os
+    from pathlib import Path
+    site_config_path = os.path.join(get_bench_path(), 'sites', f"{site_name}.config.json")
+    Path(site_config_path).unlink()
