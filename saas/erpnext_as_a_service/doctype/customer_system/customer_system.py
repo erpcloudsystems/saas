@@ -186,8 +186,8 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         "--mariadb-root-password", db_pass,
         "--admin-password", admin_pass,
         "--install-app", "erpnext",
-        "--install-app", "saas_manager",
         "--install-app", "mosyr",
+        "--install-app", "saas_manager",
         "--install-app", "mosyr_theme",
         site_name
     ]
