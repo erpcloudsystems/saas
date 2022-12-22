@@ -277,7 +277,7 @@ def resume_site_job(site_doc, site_name):
     create_logs(site_doc.name, 'Resume')
 
 def create_logs(site_doc_name, action):
-    site_name = f"{site_name}".lower()
+    site_doc_name = f"{site_doc_name}".lower()
     logs = frappe.new_doc('Customer System Log')
     logs.customer_system = site_doc_name
     logs.action = action
