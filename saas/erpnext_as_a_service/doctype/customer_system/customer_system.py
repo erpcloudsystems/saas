@@ -19,6 +19,7 @@ from frappe.installer import update_site_config
 
 class CustomerSystem(Document):
     def validate(self):
+        self.title = f"{self.title}".lower()
         self.validate_system_attributes()
         self.validate_subscription_package()
 
@@ -177,6 +178,7 @@ class CustomerSystem(Document):
         return config
 
 def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
+    site_name = f"{site_name}".lower()
     for k, v in config.items():
         write_site_config(site_name, f'{k}', v,)
     admin_pass = f"{admin_pass}"
@@ -215,6 +217,7 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         delete_saas_config(site_name)
 
 def delete_site_job(site_doc, site_name, db_user, db_pass):
+    site_name = f"{site_name}".lower()
     cmd = ["bench", "drop-site","--root-password", db_pass, "--force", site_name]
     try:
         p = subprocess.run(cmd,
@@ -235,6 +238,7 @@ def delete_site_job(site_doc, site_name, db_user, db_pass):
         create_logs(site_doc.name, 'Delete')
 
 def clean_failed_site_creation(site_name, db_pass):
+    site_name = f"{site_name}".lower()
     cmd = ["bench", "drop-site","--root-password", db_pass, site_name]
     try:
         # Try to delete from database
@@ -253,6 +257,7 @@ def clean_failed_site_creation(site_name, db_pass):
     except: pass
 
 def stoping_site_job(site_doc, site_name):
+    site_name = f"{site_name}".lower()
     try:
         config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
         update_site_config('is_suspended', 1, site_config_path=config_path)
@@ -262,6 +267,7 @@ def stoping_site_job(site_doc, site_name):
     create_logs(site_doc.name, 'Stop')
 
 def resume_site_job(site_doc, site_name):
+    site_name = f"{site_name}".lower()
     try:
         config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
         update_site_config('is_suspended', 0, site_config_path=config_path)
@@ -271,6 +277,7 @@ def resume_site_job(site_doc, site_name):
     create_logs(site_doc.name, 'Resume')
 
 def create_logs(site_doc_name, action):
+    site_name = f"{site_name}".lower()
     logs = frappe.new_doc('Customer System Log')
     logs.customer_system = site_doc_name
     logs.action = action
@@ -281,6 +288,7 @@ def create_logs(site_doc_name, action):
     frappe.db.commit()
 
 def delete_saas_config(site_name):
+    site_name = f"{site_name}".lower()
     """delete temp config"""
     import os
     from pathlib import Path
