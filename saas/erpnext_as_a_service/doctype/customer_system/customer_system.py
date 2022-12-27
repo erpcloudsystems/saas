@@ -70,7 +70,7 @@ class CustomerSystem(Document):
             'admin_user_pass': "{}".format(user_pass),
             "support_pass": "{}".format(admin_pass)
         })
-        enqueue(create_site_job, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass, admin_pass=admin_pass, config=config)
+        enqueue(create_site_job, timeout=1200, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass, admin_pass=admin_pass, config=config)
         return 'In Process'
 
     @frappe.whitelist()
