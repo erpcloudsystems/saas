@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2022-07-28 17:36:15.858629",
+ "creation": "2022-12-27 15:36:15.858629",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
@@ -15,10 +15,9 @@
  "fields": [
   {
    "fieldname": "customer_system",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Customer System",
-   "options": "Customer System",
    "reqd": 1
   },
   {
