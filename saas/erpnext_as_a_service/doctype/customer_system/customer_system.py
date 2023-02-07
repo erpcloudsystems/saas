@@ -3,25 +3,31 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-from codecs import ignore_errors
 import subprocess
 import os
+from pathlib import Path
 import shutil
 
 import frappe
 from frappe.model.document import Document
 from frappe import _
-from frappe.utils import flt, cint, get_bench_path
+from frappe.utils import flt, cint, get_bench_path, date_diff
 from frappe.utils.background_jobs import enqueue
 
 from saas.api import write_site_config
 from frappe.installer import update_site_config
+from frappe.utils.password import check_password
 
 class CustomerSystem(Document):
     def validate(self):
         self.title = f"{self.title}".lower()
+        self.validate_dates()
         self.validate_system_attributes()
         self.validate_subscription_package()
+
+    def validate_dates(self):
+        if date_diff(self.subscription_start_date, self.subscription_end_date) > 0:
+            frappe.throw(_("Start Date must be before End Date"))
 
     def validate_system_attributes(self):
         if cint(self.available_companies) == 1:
@@ -79,7 +85,6 @@ class CustomerSystem(Document):
             frappe.throw(_("can not delete site for {} site".format(self.status)))
             return
 
-        from frappe.utils.password import check_password
         try:
             user = check_password(frappe.session.user, admin_pass)
         except:
@@ -95,7 +100,6 @@ class CustomerSystem(Document):
     
     @frappe.whitelist()
     def suspend_site(self, confirm_msg, admin_pass, logout_all_users=True):
-        from frappe.utils.password import check_password
         try:
             user = check_password(frappe.session.user, admin_pass)
         except:
@@ -112,7 +116,6 @@ class CustomerSystem(Document):
     
     @frappe.whitelist()
     def resume_site(self, admin_pass, logout_all_users=True):
-        from frappe.utils.password import check_password
         try:
             user = check_password(frappe.session.user, admin_pass)
         except:
@@ -122,8 +125,15 @@ class CustomerSystem(Document):
         enqueue(resume_site_job, site_doc=self, site_name=self.title)
         return "Resuming"
         
-    def restart_site(self, confirm_msg, from_date, to_date):
-        pass
+    def update_site_subscription_dates(self, admin_pass, start_date, end_date):
+        if self.docstatus!= 1: frappe.throw(_("Submite the form before update site dates"))
+        try: user = check_password(frappe.session.user, admin_pass)
+        except:
+            frappe.throw(_("Incorrect user password"))
+            return
+        if date_diff(start_date, end_date) > 0: frappe.throw(_("Start Date must be before End Date"))
+        enqueue(reset_site_dates_job, site_doc=self, site_name=self.title, start_date=start_date, end_date=end_date)
+
     
     def get_config_site(self):
         sp = frappe.get_doc("Subscription Package", self.subscription_package)
@@ -290,7 +300,14 @@ def create_logs(site_doc_name, action):
 def delete_saas_config(site_name):
     site_name = f"{site_name}".lower()
     """delete temp config"""
-    import os
-    from pathlib import Path
     site_config_path = os.path.join(get_bench_path(), 'sites', f"{site_name}.config.json")
     Path(site_config_path).unlink()
+
+def reset_site_dates_job(site_doc, site_name, start_date, end_date):
+    site_name = f"{site_name}".lower()
+    try:
+        config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
+        update_site_config('subscription_start_date', start_date, site_config_path=config_path)
+        update_site_config('subscription_end_date', end_date, site_config_path=config_path)
+    except: pass
+    create_logs(site_doc.name, 'Update Subscription Dates')
