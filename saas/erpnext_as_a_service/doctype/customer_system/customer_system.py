@@ -133,7 +133,7 @@ class CustomerSystem(Document):
             return
         if date_diff(start_date, end_date) > 0: frappe.throw(_("Start Date must be before End Date"))
         if date_diff(start_date, self.subscription_start_date) < 0: frappe.throw(_("New Start Date must be after Subscription Start Date"))
-        enqueue(reset_site_dates_job, site_doc=self, site_name=self.title, start_date=start_date, end_date=end_date)
+        enqueue(update_site_subscription_dates_job, site_doc=self, site_name=self.title, start_date=start_date, end_date=end_date)
 
     
     def get_config_site(self):
@@ -304,7 +304,7 @@ def delete_saas_config(site_name):
     site_config_path = os.path.join(get_bench_path(), 'sites', f"{site_name}.config.json")
     Path(site_config_path).unlink()
 
-def reset_site_dates_job(site_doc, site_name, start_date, end_date):
+def update_site_subscription_dates_job(site_doc, site_name, start_date, end_date):
     site_name = f"{site_name}".lower()
     try:
         config_path = os.path.join(get_bench_path(), 'sites', site_name, "site_config.json")
