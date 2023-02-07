@@ -132,6 +132,7 @@ class CustomerSystem(Document):
             frappe.throw(_("Incorrect user password"))
             return
         if date_diff(start_date, end_date) > 0: frappe.throw(_("Start Date must be before End Date"))
+        if date_diff(start_date, self.subscription_start_date) < 0: frappe.throw(_("New Start Date must be after Subscription Start Date"))
         enqueue(reset_site_dates_job, site_doc=self, site_name=self.title, start_date=start_date, end_date=end_date)
 
     
