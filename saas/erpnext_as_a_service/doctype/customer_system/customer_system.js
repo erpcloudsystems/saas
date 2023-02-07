@@ -195,9 +195,9 @@ frappe.ui.form.on('Customer System', {
         const dialog = new frappe.ui.Dialog({
             title: __("Update Subscription Date"),
             fields: [
-                { fieldtype: "Date", fieldname: "start_date", label: __("Start Date"), default: frm.doc.start_date, reqd: 1 },
+                { fieldtype: "Date", fieldname: "start_date", label: __("Start Date"), default: frm.doc.subscription_start_date, reqd: 1 },
                 { fieldtype: "Column Break", fieldname: "column_break_1" },
-                { fieldtype: "Date", fieldname: "end_date", label: __("End Date"), default: frm.doc.end_date, reqd: 1 },
+                { fieldtype: "Date", fieldname: "end_date", label: __("End Date"), default: frm.doc.subscription_end_date, reqd: 1 },
                 { fieldtype: "Section Break", fieldname: "section_break_1" },
                 { fieldtype: "Password", fieldname: "admin_pass", label: __("User Password"), reqd: 1 },
             ],
