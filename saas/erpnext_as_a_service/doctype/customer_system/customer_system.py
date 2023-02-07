@@ -124,7 +124,8 @@ class CustomerSystem(Document):
         self.db_set('status', 'Resuming In Process', update_modified=False)
         enqueue(resume_site_job, site_doc=self, site_name=self.title)
         return "Resuming"
-        
+    
+    @frappe.whitelist()
     def update_site_subscription_dates(self, admin_pass, start_date, end_date):
         if self.docstatus!= 1: frappe.throw(_("Submite the form before update site dates"))
         try: user = check_password(frappe.session.user, admin_pass)
