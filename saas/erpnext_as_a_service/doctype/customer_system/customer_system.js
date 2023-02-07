@@ -10,7 +10,6 @@ frappe.ui.form.on('Customer System', {
     refresh: function (frm) {
         frm.trigger('set_label')
         if (frm.doc.docstatus == 1) {
-            frm.add_custom_button(__('Change Subscription Date'), function () { frm.trigger("change_dates") });
             if (["Pending", "Email Sent", "Site Verified"].includes(frm.doc.status)) {
                 frm.add_custom_button(__('Create site'), function () { frm.trigger("create_site") });
             }
@@ -28,6 +27,7 @@ frappe.ui.form.on('Customer System', {
             if (["Created"].includes(frm.doc.status)) {
                 frm.add_custom_button(__('Delete site'), function () { frm.trigger("delete_site") });
                 frm.add_custom_button(__('Suspend site'), function () { frm.trigger("suspend_site") });
+                frm.add_custom_button(__('Change Subscription Date'), function () { frm.trigger("change_dates") });
             }
             if (["Suspended"].includes(frm.doc.status)) {
                 frm.add_custom_button(__('Delete site'), function () { frm.trigger("delete_site") });
