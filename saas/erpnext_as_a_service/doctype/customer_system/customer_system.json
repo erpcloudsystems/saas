@@ -30,6 +30,9 @@
   "available_devices",
   "available_users",
   "available_companies",
+  "email_account_settings_section",
+  "email_account",
+  "email_config",
   "system_status_section",
   "status",
   "amended_from"
@@ -224,11 +227,33 @@
    "label": "Currency",
    "options": "Currency",
    "reqd": 1
+  },
+  {
+   "fieldname": "email_account_settings_section",
+   "fieldtype": "Section Break",
+   "label": "Email Account Settings"
+  },
+  {
+   "description": "Select Email Account Which do you Want to Send and Receive E-mails on System",
+   "fieldname": "email_account",
+   "fieldtype": "Link",
+   "label": "Default Email Account",
+   "no_copy": 1,
+   "options": "Email Account"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "email_config",
+   "fieldtype": "Text",
+   "hidden": 1,
+   "label": "Email Config",
+   "no_copy": 1,
+   "read_only": 1
   }
  ],
  "is_submittable": 1,
  "links": [],
- "modified": "2022-09-25 14:07:43.141175",
+ "modified": "2023-06-13 16:45:29.314120",
  "modified_by": "Administrator",
  "module": "ERPNext as a Service",
  "name": "Customer System",

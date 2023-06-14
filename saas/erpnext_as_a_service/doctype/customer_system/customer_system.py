@@ -19,6 +19,10 @@ from frappe.installer import update_site_config
 from frappe.utils.password import check_password
 
 class CustomerSystem(Document):
+    def on_submit(self):
+        self.set_email_account_config()
+
+
     def validate(self):
         self.title = f"{self.title}".lower()
         self.validate_dates()
@@ -74,7 +78,8 @@ class CustomerSystem(Document):
         config = self.get_config_site()
         config.update({
             'admin_user_pass': "{}".format(user_pass),
-            "support_pass": "{}".format(admin_pass)
+            "support_pass": "{}".format(admin_pass),
+            "email_acc_config": "{}".format(self.email_config)
         })
         enqueue(create_site_job, timeout=1200, site_doc=self, site_name=self.title, db_user='root', db_pass=db_pass, admin_pass=admin_pass, config=config)
         return 'In Process'
@@ -188,6 +193,15 @@ class CustomerSystem(Document):
             'customer': self.customer_lead,
         })
         return config
+
+    def set_email_account_config(self):
+        if self.email_account:
+            email_account = frappe.get_doc("Email Account", self.email_account)
+            email_account_pwd = email_account.get_password()
+            email_account.password = email_account_pwd
+            configuration = email_account.as_json()
+            self.db_set("email_config", configuration)
+            frappe.db.commit()
 
 def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
     site_name = f"{site_name}".lower()
