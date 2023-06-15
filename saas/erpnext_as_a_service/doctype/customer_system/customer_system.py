@@ -240,6 +240,10 @@ def create_site_job(site_doc, site_name, db_user, db_pass, admin_pass, config):
         for k, v in config.items():
             if k in ['admin_user_pass', 'support_pass']: continue
             update_site_config(f'{k}', v, site_config_path=config_path)
+
+        # run bench migrate
+        frappe.utils.execute_in_shell(f"bench --site {site_name} migrate")
+
         delete_saas_config(site_name)
 
 def delete_site_job(site_doc, site_name, db_user, db_pass):
