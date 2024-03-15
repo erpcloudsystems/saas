@@ -332,5 +332,6 @@ def update_site_subscription_dates_job(site_doc, site_name, start_date, end_date
         site_doc.db_set('subscription_start_date', start_date, update_modified=False)
         site_doc.db_set('subscription_end_date', end_date, update_modified=False)
         frappe.db.commit()
+        
     except: pass
     create_logs(site_doc.name, 'Update Subscription Dates')
